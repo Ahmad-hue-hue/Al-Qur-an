@@ -1,9 +1,9 @@
 "use client"
 
 import { useAdminMarhalas, useAdminStudents } from "@/lib/hooks"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Users, GraduationCap, BookOpen } from "lucide-react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faUsers, faGraduationCap, faBookOpen } from "@fortawesome/free-solid-svg-icons"
 
 export default function AdminDashboardPage() {
   const { data: marhalas = [], isLoading: marhalasLoading } = useAdminMarhalas()
@@ -11,79 +11,75 @@ export default function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="mb-8 text-3xl font-bold text-foreground">Admin Dashboard</h1>
+      <h1 className="mb-6 text-2xl font-bold text-foreground sm:mb-8 sm:text-3xl">
+        Admin Dashboard
+      </h1>
 
-      <div className="mb-8 grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Marhalas</CardTitle>
-            <GraduationCap className="size-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            {marhalasLoading ? (
-              <Skeleton className="h-8 w-16" />
+      <div className="mb-6 grid grid-cols-3 gap-2 sm:mb-8 sm:gap-4">
+        {[
+          {
+            label: "Marhalas",
+            value: marhalas.length,
+            icon: faGraduationCap,
+            loading: marhalasLoading,
+          },
+          {
+            label: "Students",
+            value: students.length,
+            icon: faUsers,
+            loading: studentsLoading,
+          },
+          {
+            label: "Courses",
+            value: marhalas.reduce((sum: number, m: any) => sum + (m.courses_count || 0), 0),
+            icon: faBookOpen,
+            loading: marhalasLoading,
+          },
+        ].map((stat) => (
+          <div key={stat.label} className="rounded-xl border border-border bg-card p-3 shadow-sm sm:p-4">
+            <div className="mb-1 flex items-center justify-between">
+              <span className="text-xs text-muted-foreground sm:text-sm">{stat.label}</span>
+              <FontAwesomeIcon icon={stat.icon} className="size-3 text-muted-foreground sm:size-4" />
+            </div>
+            {stat.loading ? (
+              <Skeleton className="h-6 w-12 sm:h-8" />
             ) : (
-              <div className="text-2xl font-bold">{marhalas.length}</div>
+              <div className="text-xl font-bold sm:text-2xl">{stat.value}</div>
             )}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Students</CardTitle>
-            <Users className="size-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            {studentsLoading ? (
-              <Skeleton className="h-8 w-16" />
-            ) : (
-              <div className="text-2xl font-bold">{students.length}</div>
-            )}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Courses</CardTitle>
-            <BookOpen className="size-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            {marhalasLoading ? (
-              <Skeleton className="h-8 w-16" />
-            ) : (
-              <div className="text-2xl font-bold">
-                {marhalas.reduce((sum: number, m: any) => sum + (m.courses_count || 0), 0)}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+          </div>
+        ))}
       </div>
 
-      <h2 className="mb-4 text-xl font-semibold text-foreground">Recent Students</h2>
+      <h2 className="mb-3 text-lg font-semibold text-foreground sm:mb-4 sm:text-xl">
+        Recent Students
+      </h2>
       {studentsLoading ? (
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-12" />
+            <Skeleton key={i} className="h-14 sm:h-16" />
           ))}
         </div>
       ) : students.length === 0 ? (
-        <Card>
-          <CardContent className="py-8 text-center text-muted-foreground">
-            No students registered yet
-          </CardContent>
-        </Card>
+        <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground shadow-sm">
+          No students registered yet
+        </div>
       ) : (
         <div className="space-y-2">
           {students.slice(0, 10).map((student: any) => (
-            <Card key={student.id}>
-              <CardContent className="flex items-center justify-between py-3">
-                <div>
-                  <p className="font-medium">{student.name}</p>
-                  <p className="text-sm text-muted-foreground">{student.email}</p>
+            <div key={student.id} className="flex items-center justify-between rounded-xl border border-border bg-card p-3 shadow-sm sm:p-4">
+              <div className="flex items-center gap-3">
+                <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary sm:size-10">
+                  {student.name.charAt(0).toUpperCase()}
                 </div>
-                <div className="text-sm text-muted-foreground">
-                  {student.registration_number || "No reg number"}
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium">{student.name}</p>
+                  <p className="truncate text-xs text-muted-foreground">{student.email}</p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+              <span className="shrink-0 text-xs text-muted-foreground">
+                {student.registration_number || "-"}
+              </span>
+            </div>
           ))}
         </div>
       )}

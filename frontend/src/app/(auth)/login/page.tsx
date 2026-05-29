@@ -7,7 +7,8 @@ import { useAuth } from "@/hooks/useAuth"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBookOpen, faSignInAlt } from "@fortawesome/free-solid-svg-icons"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -21,7 +22,6 @@ export default function LoginPage() {
     e.preventDefault()
     setError("")
     setLoading(true)
-
     try {
       await login(email, password)
       router.push("/dashboard")
@@ -33,53 +33,73 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-200px)] items-center justify-center py-12">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Welcome Back</CardTitle>
-          <CardDescription>Sign in to continue your learning journey</CardDescription>
-        </CardHeader>
-        <CardContent>
+    <div className="flex min-h-[calc(100dvh-200px)] items-center justify-center px-4 py-8">
+      <div className="w-full max-w-sm">
+        <div className="mb-6 text-center">
+          <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-primary/10">
+            <FontAwesomeIcon icon={faBookOpen} className="size-6 text-primary" />
+          </div>
+          <h1 className="text-2xl font-bold text-foreground">Welcome Back</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Sign in to continue your learning journey
+          </p>
+        </div>
+
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm sm:p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+              <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
                 {error}
               </div>
             )}
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-sm">
+                Email
+              </Label>
               <Input
                 id="email"
                 type="email"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="h-11"
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="password" className="text-sm">
+                Password
+              </Label>
               <Input
                 id="password"
                 type="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="h-11"
                 required
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Signing in..." : "Sign In"}
+            <Button type="submit" className="h-11 w-full" disabled={loading}>
+              {loading ? (
+                "Signing in..."
+              ) : (
+                <>
+                  <FontAwesomeIcon icon={faSignInAlt} className="mr-2 size-4" />
+                  Sign In
+                </>
+              )}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-primary hover:underline">
-              Register
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+
+        <p className="mt-4 text-center text-sm text-muted-foreground">
+          Don&apos;t have an account?{" "}
+          <Link href="/register" className="font-medium text-primary hover:underline">
+            Register
+          </Link>
+        </p>
+      </div>
     </div>
   )
 }

@@ -1,62 +1,62 @@
 "use client"
 
 import { useAdminMarhalas } from "@/lib/hooks"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Plus, Edit, Eye, EyeOff } from "lucide-react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPlus, faEdit, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
 
 export default function AdminMarhalasPage() {
   const { data: marhalas = [], isLoading } = useAdminMarhalas()
 
   return (
     <div>
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-foreground">Manage Marhalas</h1>
-        <Button>
-          <Plus className="mr-2 size-4" /> Add Marhala
+      <div className="mb-6 flex items-center justify-between sm:mb-8">
+        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Manage Marhalas</h1>
+        <Button size="sm">
+          <FontAwesomeIcon icon={faPlus} className="mr-1 size-3" /> Add
         </Button>
       </div>
 
       {isLoading ? (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-24" />
+            <Skeleton key={i} className="h-20 sm:h-24" />
           ))}
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {marhalas.map((marhala: any) => (
-            <Card key={marhala.id}>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-lg font-bold text-primary">
-                      {marhala.order}
-                    </div>
-                    <div>
-                      <CardTitle>{marhala.title}</CardTitle>
-                      <p className="text-sm text-muted-foreground">
-                        {marhala.courses_count} courses • Pass: {marhala.passing_threshold}%
-                      </p>
-                    </div>
+            <div key={marhala.id} className="rounded-xl border border-border bg-card p-4 shadow-sm sm:p-5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-lg font-bold text-primary">
+                    {marhala.order}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant={marhala.is_visible ? "default" : "secondary"}>
-                      {marhala.is_visible ? (
-                        <><Eye className="mr-1 size-3" /> Visible</>
-                      ) : (
-                        <><EyeOff className="mr-1 size-3" /> Hidden</>
-                      )}
-                    </Badge>
-                    <Button variant="ghost" size="sm">
-                      <Edit className="size-4" />
-                    </Button>
+                  <div>
+                    <h3 className="text-sm font-semibold text-foreground sm:text-base">
+                      {marhala.title}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      {marhala.courses_count} courses • {marhala.passing_threshold}%
+                    </p>
                   </div>
                 </div>
-              </CardHeader>
-            </Card>
+                <div className="flex items-center gap-2">
+                  <Badge variant={marhala.is_visible ? "default" : "secondary"}>
+                    <FontAwesomeIcon
+                      icon={marhala.is_visible ? faEye : faEyeSlash}
+                      className="mr-1 size-2"
+                    />
+                    {marhala.is_visible ? "Visible" : "Hidden"}
+                  </Badge>
+                  <Button variant="ghost" size="sm">
+                    <FontAwesomeIcon icon={faEdit} className="size-3" />
+                  </Button>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       )}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import "@/lib/icons"
 import { AuthProvider } from "@/hooks/useAuth"
 import { QueryProvider } from "@/lib/providers"
 import { Navbar } from "@/components/layout/Navbar"
@@ -10,6 +11,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Al-Qur'an Learning Platform",
   description: "Learn the Quran with structured courses and progressive learning",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
 }
 
 export default function RootLayout({
@@ -22,11 +24,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <QueryProvider>
           <AuthProvider>
-            <div className="flex min-h-screen flex-col">
+            <div className="flex min-h-dvh flex-col">
               <Navbar />
               <main className="flex-1">{children}</main>
-              <footer className="border-t border-border bg-muted/30 py-6">
-                <div className="mx-auto max-w-6xl px-4 text-center text-sm text-muted-foreground">
+              <footer className="border-t border-border bg-muted/30 py-4 sm:py-6">
+                <div className="px-4 text-center text-xs text-muted-foreground sm:text-sm">
                   &copy; 2026 Al-Qur&apos;an Learning Platform. All rights reserved.
                 </div>
               </footer>

@@ -1,13 +1,12 @@
 "use client"
 
+import { useState } from "react"
+import Link from "next/link"
 import { useAdminStudents } from "@/lib/hooks"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { ArrowRight, Search } from "lucide-react"
-import Link from "next/link"
-import { useState } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSearch, faArrowRight } from "@fortawesome/free-solid-svg-icons"
 
 export default function AdminStudentsPage() {
   const { data: students = [], isLoading } = useAdminStudents()
@@ -22,14 +21,19 @@ export default function AdminStudentsPage() {
 
   return (
     <div>
-      <h1 className="mb-8 text-3xl font-bold text-foreground">Students</h1>
+      <h1 className="mb-6 text-2xl font-bold text-foreground sm:mb-8 sm:text-3xl">
+        Students
+      </h1>
 
-      <div className="mb-6 flex items-center gap-2">
-        <Search className="size-4 text-muted-foreground" />
+      <div className="mb-4 relative sm:mb-6">
+        <FontAwesomeIcon
+          icon={faSearch}
+          className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+        />
         <input
           type="text"
-          placeholder="Search by name, email, or registration number..."
-          className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm"
+          placeholder="Search students..."
+          className="h-10 w-full rounded-lg border border-border bg-background pl-9 pr-3 text-sm"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -38,43 +42,46 @@ export default function AdminStudentsPage() {
       {isLoading ? (
         <div className="space-y-2">
           {[1, 2, 3, 4, 5].map((i) => (
-            <Skeleton key={i} className="h-16" />
+            <Skeleton key={i} className="h-14 sm:h-16" />
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <Card>
-          <CardContent className="py-8 text-center text-muted-foreground">
-            {search ? "No students match your search" : "No students registered yet"}
-          </CardContent>
-        </Card>
+        <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground shadow-sm">
+          {search ? "No students match your search" : "No students registered yet"}
+        </div>
       ) : (
         <div className="space-y-2">
           {filtered.map((student: any) => (
-            <Card key={student.id}>
-              <CardContent className="flex items-center justify-between py-4">
-                <div className="flex items-center gap-4">
-                  <div className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                    {student.name.charAt(0).toUpperCase()}
-                  </div>
-                  <div>
-                    <p className="font-medium">{student.name}</p>
-                    <p className="text-sm text-muted-foreground">{student.email}</p>
-                  </div>
+            <div
+              key={student.id}
+              className="flex items-center justify-between rounded-xl border border-border bg-card p-3 shadow-sm sm:p-4"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary sm:size-10">
+                  {student.name.charAt(0).toUpperCase()}
                 </div>
-                <div className="flex items-center gap-4">
-                  {student.registration_number ? (
-                    <Badge variant="secondary">{student.registration_number}</Badge>
-                  ) : (
-                    <Badge variant="outline">No reg #</Badge>
-                  )}
-                  <Link href={`/admin/students/${student.id}`}>
-                    <Button variant="ghost" size="sm">
-                      View <ArrowRight className="ml-1 size-4" />
-                    </Button>
-                  </Link>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium">{student.name}</p>
+                  <p className="truncate text-xs text-muted-foreground">{student.email}</p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+              <div className="flex items-center gap-2">
+                {student.registration_number ? (
+                  <Badge variant="secondary" className="hidden text-xs sm:inline-flex">
+                    {student.registration_number}
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="hidden text-xs sm:inline-flex">
+                    No reg #
+                  </Badge>
+                )}
+                <Link href={`/admin/students/${student.id}`}>
+                  <Button variant="ghost" size="sm">
+                    <FontAwesomeIcon icon={faArrowRight} className="size-3" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
           ))}
         </div>
       )}
