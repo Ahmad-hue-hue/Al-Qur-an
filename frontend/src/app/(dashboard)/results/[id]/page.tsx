@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faCheckCircle,
-  faXCircle,
+  faCircleXmark,
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons"
 
@@ -50,7 +50,7 @@ export default function ResultDetailPage() {
 
         <div className="rounded-xl border border-border bg-card p-6 text-center shadow-sm sm:p-8">
           <FontAwesomeIcon
-            icon={result.passed ? faCheckCircle : faXCircle}
+            icon={result.passed ? faCheckCircle : faCircleXmark}
             className={`mb-4 size-12 sm:size-14 ${
               result.passed ? "text-green-500" : "text-red-500"
             }`}
