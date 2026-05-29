@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faBookOpen,
@@ -15,15 +16,25 @@ export default function HomePage() {
       {/* Hero */}
       <section className="bg-gradient-to-b from-primary/5 to-background px-4 py-12 sm:py-20 lg:py-28">
         <div className="mx-auto max-w-4xl text-center">
-          <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-primary/10 sm:mb-6 sm:size-16">
-            <FontAwesomeIcon icon={faBookOpen} className="size-7 text-primary sm:size-8" />
+          <div className="mx-auto mb-4 sm:mb-6">
+            <Image
+              src="/logo.jpeg"
+              alt="Quran Learning & Tajweed Program"
+              width={96}
+              height={96}
+              className="mx-auto rounded-full"
+              priority
+            />
           </div>
-          <h1 className="mb-3 text-3xl font-bold tracking-tight text-foreground sm:mb-4 sm:text-4xl lg:text-5xl">
-            Al-Qur&apos;an Learning Platform
+          <h1 className="mb-3 text-2xl font-bold tracking-tight text-foreground sm:mb-4 sm:text-3xl lg:text-5xl">
+            Qur&apos;an Learning & Tajweed Program
           </h1>
-          <p className="mb-6 text-base text-muted-foreground sm:mb-8 sm:text-lg lg:text-xl">
-            Embark on a structured journey to learn the Quran with progressive courses,
-            comprehensive tests, and detailed results tracking.
+          <p className="mb-2 text-sm text-primary/80 sm:text-base">
+            وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا
+          </p>
+          <p className="mb-6 text-sm text-muted-foreground sm:mb-8 sm:text-base lg:text-lg">
+            Recite the Quran with measured, deliberate recitation.
+            Learn proper Tajweed through structured courses and progressive learning.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
             <Link
@@ -53,12 +64,12 @@ export default function HomePage() {
               {
                 icon: faGraduationCap,
                 title: "Structured Marhalas",
-                desc: "Progress through 4 levels with gated advancement. Pass the current marhala to unlock the next.",
+                desc: "Progress through 4 levels with gated advancement. Master each marhala to unlock the next.",
               },
               {
                 icon: faBookOpen,
-                title: "Interactive Courses",
-                desc: "Each marhala contains courses with lessons, audio recitations, and comprehensive content.",
+                title: "Tajweed Courses",
+                desc: "Each marhala contains courses covering Tajweed rules, recitation practice, and Quranic studies.",
               },
               {
                 icon: faAward,
@@ -126,7 +137,7 @@ export default function HomePage() {
             Ready to Start?
           </h2>
           <p className="mb-6 text-sm text-muted-foreground sm:mb-8 sm:text-base">
-            Join thousands of students on their Quran learning journey.
+            Join students on their Quran and Tajweed learning journey.
             Register now to begin with Marhala 1.
           </p>
           <Link

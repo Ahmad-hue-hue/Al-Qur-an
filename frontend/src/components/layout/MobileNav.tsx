@@ -2,10 +2,10 @@
 
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { useAuth } from "@/hooks/useAuth"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-  faBookOpen,
   faBars,
   faTimes,
   faHome,
@@ -14,7 +14,6 @@ import {
   faSignOutAlt,
   faUser,
   faChevronRight,
-  faCog,
 } from "@fortawesome/free-solid-svg-icons"
 
 export function MobileNav() {
@@ -39,9 +38,9 @@ export function MobileNav() {
   ]
 
   const adminLinks = [
-    { href: "/admin", label: "Admin Dashboard", icon: faCog },
+    { href: "/admin", label: "Admin Dashboard", icon: faUser },
     { href: "/admin/marhalas", label: "Manage Marhalas", icon: faClipboardList },
-    { href: "/admin/students", label: "Students", icon: faUser },
+    { href: "/admin/students", label: "Students", icon: faHome },
   ]
 
   const links = user?.role === "admin" ? adminLinks : studentLinks
@@ -60,11 +59,16 @@ export function MobileNav() {
           <div className="fixed inset-0 z-40 bg-black/50" onClick={() => setOpen(false)} />
           <div className="fixed inset-y-0 left-0 z-50 w-72 bg-background shadow-xl">
             <div className="flex h-full flex-col">
-              {/* Header */}
               <div className="flex items-center justify-between border-b border-border px-4 py-4">
                 <div className="flex items-center gap-2">
-                  <FontAwesomeIcon icon={faBookOpen} className="size-5 text-primary" />
-                  <span className="font-bold">Al-Qur&apos;an</span>
+                  <Image
+                    src="/logo.jpeg"
+                    alt="Logo"
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                  />
+                  <span className="text-sm font-bold text-primary">Tajweed Program</span>
                 </div>
                 <button
                   onClick={() => setOpen(false)}
@@ -74,7 +78,6 @@ export function MobileNav() {
                 </button>
               </div>
 
-              {/* User Info */}
               {user && (
                 <div className="border-b border-border px-4 py-4">
                   <div className="flex items-center gap-3">
@@ -94,7 +97,6 @@ export function MobileNav() {
                 </div>
               )}
 
-              {/* Links */}
               <nav className="flex-1 overflow-y-auto px-3 py-4">
                 {links.map((link) => (
                   <Link
@@ -112,7 +114,6 @@ export function MobileNav() {
                 ))}
               </nav>
 
-              {/* Logout */}
               {user && (
                 <div className="border-t border-border p-3">
                   <button

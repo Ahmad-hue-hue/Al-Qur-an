@@ -3,12 +3,13 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { useAuth } from "@/hooks/useAuth"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBookOpen, faSignInAlt } from "@fortawesome/free-solid-svg-icons"
+import { faSignInAlt } from "@fortawesome/free-solid-svg-icons"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -36,12 +37,16 @@ export default function LoginPage() {
     <div className="flex min-h-[calc(100dvh-200px)] items-center justify-center px-4 py-8">
       <div className="w-full max-w-sm">
         <div className="mb-6 text-center">
-          <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-primary/10">
-            <FontAwesomeIcon icon={faBookOpen} className="size-6 text-primary" />
-          </div>
+          <Image
+            src="/logo.jpeg"
+            alt="Logo"
+            width={56}
+            height={56}
+            className="mx-auto mb-3 rounded-full"
+          />
           <h1 className="text-2xl font-bold text-foreground">Welcome Back</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Sign in to continue your learning journey
+            Sign in to continue your Tajweed journey
           </p>
         </div>
 

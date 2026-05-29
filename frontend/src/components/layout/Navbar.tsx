@@ -2,17 +2,18 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { useAuth } from "@/hooks/useAuth"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-  faBookOpen,
   faBars,
   faTimes,
-  faUser,
-  faSignOutAlt,
   faHome,
   faClipboardList,
   faAward,
+  faSignOutAlt,
+  faUser,
+  faChevronRight,
 } from "@fortawesome/free-solid-svg-icons"
 
 export function Navbar() {
@@ -24,8 +25,16 @@ export function Navbar() {
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <FontAwesomeIcon icon={faBookOpen} className="size-5 text-primary sm:size-6" />
-          <span className="text-lg font-bold sm:text-xl">Al-Qur&apos;an</span>
+          <Image
+            src="/logo.jpeg"
+            alt="Quran Learning & Tajweed Program"
+            width={36}
+            height={36}
+            className="rounded-full sm:h-10 sm:w-10"
+          />
+          <span className="hidden text-sm font-bold text-primary sm:block lg:text-base">
+            Qur&apos;an & Tajweed
+          </span>
         </Link>
 
         {/* Desktop Nav */}
@@ -108,9 +117,13 @@ export function Navbar() {
           {user ? (
             <div className="space-y-1">
               <div className="mb-3 flex items-center gap-3 border-b border-border pb-3">
-                <div className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
+                <Image
+                  src="/logo.jpeg"
+                  alt="Logo"
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
                 <div>
                   <p className="font-medium">{user.name}</p>
                   <p className="text-xs text-muted-foreground">{user.email}</p>

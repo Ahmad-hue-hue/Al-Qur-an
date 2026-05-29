@@ -9,8 +9,8 @@ import { Navbar } from "@/components/layout/Navbar"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Al-Qur'an Learning Platform",
-  description: "Learn the Quran with structured courses and progressive learning",
+  title: "Qur'an Learning & Tajweed Program",
+  description: "Learn the Quran with proper Tajweed through structured courses and progressive learning",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1",
 }
 
@@ -29,7 +29,7 @@ export default function RootLayout({
               <main className="flex-1">{children}</main>
               <footer className="border-t border-border bg-muted/30 py-4 sm:py-6">
                 <div className="px-4 text-center text-xs text-muted-foreground sm:text-sm">
-                  &copy; 2026 Al-Qur&apos;an Learning Platform. All rights reserved.
+                  &copy; 2026 Qur&apos;an Learning & Tajweed Program. All rights reserved.
                 </div>
               </footer>
             </div>
