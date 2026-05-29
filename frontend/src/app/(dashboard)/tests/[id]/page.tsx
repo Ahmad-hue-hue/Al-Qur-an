@@ -15,6 +15,7 @@ import {
   faClock,
   faCheckCircle,
   faCircleXmark,
+  faClipboardList,
 } from "@fortawesome/free-solid-svg-icons"
 
 export default function TestPage() {
@@ -64,9 +65,9 @@ export default function TestPage() {
   if (isLoading) {
     return (
       <div className="px-4 py-6 sm:py-8">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-2xl">
           <Skeleton className="mb-6 h-8 w-48" />
-          <Skeleton className="h-48 sm:h-64" />
+          <Skeleton className="h-64" />
         </div>
       </div>
     )
@@ -87,18 +88,21 @@ export default function TestPage() {
           <div className="rounded-xl border border-border bg-card p-6 text-center shadow-sm sm:p-8">
             <FontAwesomeIcon
               icon={result.passed ? faCheckCircle : faCircleXmark}
-              className={`mb-4 size-12 sm:size-14 ${
+              className={`mb-4 size-14 ${
                 result.passed ? "text-green-500" : "text-red-500"
               }`}
             />
             <h2 className="mb-2 text-xl font-bold text-foreground sm:text-2xl">
               {result.passed ? "Congratulations!" : "Keep Practicing"}
             </h2>
-            <div className="mb-4 text-4xl font-bold sm:text-5xl">{result.score}%</div>
-            <Badge variant={result.passed ? "default" : "destructive"} className="text-sm">
+            <div className="mb-4 text-5xl font-bold">{result.score}%</div>
+            <Badge
+              variant={result.passed ? "default" : "destructive"}
+              className="mb-6 text-sm"
+            >
               {result.passed ? "Passed" : "Failed"}
             </Badge>
-            <div className="mt-6 sm:mt-8">
+            <div>
               <Button onClick={() => router.back()}>Back to Course</Button>
             </div>
           </div>
@@ -116,7 +120,10 @@ export default function TestPage() {
       <div className="mx-auto max-w-2xl">
         {/* Header */}
         <div className="mb-4 flex items-center justify-between sm:mb-6">
-          <h1 className="text-lg font-bold text-foreground sm:text-xl">{test.title}</h1>
+          <div className="flex items-center gap-2">
+            <FontAwesomeIcon icon={faClipboardList} className="size-5 text-primary" />
+            <h1 className="text-lg font-bold text-foreground sm:text-xl">{test.title}</h1>
+          </div>
           <div className="flex items-center gap-2">
             <FontAwesomeIcon icon={faClock} className="size-4 text-muted-foreground" />
             <span
@@ -145,7 +152,7 @@ export default function TestPage() {
           </div>
         </div>
 
-        {/* Question */}
+        {/* Question Card */}
         <div className="mb-6 rounded-xl border border-border bg-card p-4 shadow-sm sm:mb-8 sm:p-6">
           <h2 className="mb-4 text-base font-medium text-foreground sm:text-lg">
             {question.text}

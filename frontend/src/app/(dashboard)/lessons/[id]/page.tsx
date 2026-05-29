@@ -2,6 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation"
 import { useState, useRef } from "react"
+import Image from "next/image"
 import { useLesson, useCompleteLesson } from "@/lib/hooks"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -12,6 +13,7 @@ import {
   faCheckCircle,
   faPlay,
   faPause,
+  faBookOpen,
 } from "@fortawesome/free-solid-svg-icons"
 
 export default function LessonPage() {
@@ -50,7 +52,8 @@ export default function LessonPage() {
       <div className="px-4 py-6 sm:py-8">
         <div className="mx-auto max-w-4xl">
           <Skeleton className="mb-6 h-8 w-48" />
-          <Skeleton className="h-48 sm:h-64" />
+          <Skeleton className="mb-6 h-48 sm:h-64" />
+          <Skeleton className="h-64" />
         </div>
       </div>
     )
@@ -74,20 +77,34 @@ export default function LessonPage() {
           <FontAwesomeIcon icon={faArrowLeft} className="size-3" /> Back
         </button>
 
-        <div className="mb-6 sm:mb-8">
-          <p className="mb-1 text-xs text-muted-foreground sm:text-sm">
-            Lesson {lesson.order}
-          </p>
-          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
-            {lesson.title}
-          </h1>
+        {/* Lesson Header */}
+        <div className="mb-6 rounded-xl border border-border bg-card p-4 shadow-sm sm:mb-8 sm:p-6">
+          <div className="flex items-center gap-3">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-sm font-bold text-primary-foreground">
+              {lesson.order}
+            </div>
+            <div>
+              <h1 className="text-lg font-bold text-foreground sm:text-xl">
+                {lesson.title}
+              </h1>
+              <p className="text-xs text-muted-foreground sm:text-sm">
+                Lesson {lesson.order}
+              </p>
+            </div>
+          </div>
         </div>
 
+        {/* Audio Player */}
         {lesson.audio_file && (
-          <div className="mb-6 rounded-xl border border-border bg-card p-4 shadow-sm sm:mb-8 sm:p-5">
+          <div className="mb-6 rounded-xl border border-border bg-card p-4 shadow-sm sm:mb-8">
             <div className="flex items-center gap-4">
-              <Button variant="outline" size="icon" onClick={toggleAudio} className="shrink-0">
-                <FontAwesomeIcon icon={playing ? faPause : faPlay} className="size-4" />
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={toggleAudio}
+                className="size-12 shrink-0 rounded-full"
+              >
+                <FontAwesomeIcon icon={playing ? faPause : faPlay} className="size-5" />
               </Button>
               <div className="flex-1">
                 <audio
@@ -102,14 +119,20 @@ export default function LessonPage() {
           </div>
         )}
 
+        {/* Lesson Content */}
         <div className="mb-6 rounded-xl border border-border bg-card p-4 shadow-sm sm:mb-8 sm:p-6">
+          <div className="mb-4 flex items-center gap-2 text-sm font-medium text-muted-foreground">
+            <FontAwesomeIcon icon={faBookOpen} className="size-4" />
+            Lesson Content
+          </div>
           <div
             className="prose prose-slate max-w-none text-sm dark:prose-invert sm:text-base"
             dangerouslySetInnerHTML={{ __html: lesson.content }}
           />
         </div>
 
-        <div className="flex items-center justify-between">
+        {/* Complete Button */}
+        <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4 shadow-sm sm:p-6">
           <Button variant="outline" onClick={() => router.back()}>
             <FontAwesomeIcon icon={faArrowLeft} className="mr-2 size-4" /> Back
           </Button>
@@ -124,7 +147,8 @@ export default function LessonPage() {
                 "Completing..."
               ) : (
                 <>
-                  Complete <FontAwesomeIcon icon={faArrowRight} className="ml-2 size-4" />
+                  Mark as Complete
+                  <FontAwesomeIcon icon={faArrowRight} className="ml-2 size-4" />
                 </>
               )}
             </Button>
