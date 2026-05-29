@@ -7,7 +7,7 @@ import {
   faAward,
   faArrowRight,
   faClipboardList,
-  faLock,
+  faUserPlus,
 } from "@fortawesome/free-solid-svg-icons"
 
 export default function HomePage() {
@@ -41,13 +41,8 @@ export default function HomePage() {
               href="/register"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
-              Get Started <FontAwesomeIcon icon={faArrowRight} className="size-4" />
-            </Link>
-            <Link
-              href="/login"
-              className="inline-flex items-center justify-center rounded-lg border border-border px-6 py-3 text-sm font-medium transition-colors hover:bg-muted"
-            >
-              Sign In
+              <FontAwesomeIcon icon={faUserPlus} className="size-4" />
+              Sign Up to Start
             </Link>
           </div>
         </div>
@@ -132,19 +127,20 @@ export default function HomePage() {
       {/* CTA */}
       <section className="px-4 py-12 sm:py-20">
         <div className="mx-auto max-w-2xl text-center">
-          <FontAwesomeIcon icon={faLock} className="mb-4 size-8 text-primary sm:size-10" />
+          <FontAwesomeIcon icon={faClipboardList} className="mb-4 size-8 text-primary sm:size-10" />
           <h2 className="mb-3 text-2xl font-bold text-foreground sm:mb-4 sm:text-3xl">
             Ready to Start?
           </h2>
           <p className="mb-6 text-sm text-muted-foreground sm:mb-8 sm:text-base">
             Join students on their Quran and Tajweed learning journey.
-            Register now to begin with Marhala 1.
+            Create your free account to begin with Marhala 1.
           </p>
           <Link
             href="/register"
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Start Learning <FontAwesomeIcon icon={faArrowRight} className="size-4" />
+            <FontAwesomeIcon icon={faUserPlus} className="size-4" />
+            Create Free Account
           </Link>
         </div>
       </section>

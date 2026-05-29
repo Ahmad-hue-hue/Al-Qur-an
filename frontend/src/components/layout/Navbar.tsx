@@ -14,6 +14,7 @@ import {
   faSignOutAlt,
   faUser,
   faChevronRight,
+  faUserPlus,
 } from "@fortawesome/free-solid-svg-icons"
 
 export function Navbar() {
@@ -85,20 +86,13 @@ export function Navbar() {
               </button>
             </>
           ) : (
-            <>
-              <Link
-                href="/login"
-                className="rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              >
-                Login
-              </Link>
-              <Link
-                href="/register"
-                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-              >
-                Register
-              </Link>
-            </>
+            <Link
+              href="/register"
+              className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              <FontAwesomeIcon icon={faUserPlus} className="size-4" />
+              Sign Up
+            </Link>
           )}
         </div>
 
@@ -177,18 +171,12 @@ export function Navbar() {
           ) : (
             <div className="space-y-2">
               <Link
-                href="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block rounded-lg border border-border px-4 py-2.5 text-center text-sm font-medium transition-colors hover:bg-muted"
-              >
-                Login
-              </Link>
-              <Link
                 href="/register"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block rounded-lg bg-primary px-4 py-2.5 text-center text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                className="flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
-                Register
+                <FontAwesomeIcon icon={faUserPlus} className="size-4" />
+                Sign Up
               </Link>
             </div>
           )}

@@ -2,6 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { useMarhala, useMarhalaCourses, useEnroll, useMyMarhalas } from "@/lib/hooks"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -12,6 +13,9 @@ import {
   faArrowRight,
   faCheckCircle,
   faArrowLeft,
+  faBookOpen,
+  faClipboardList,
+  faClock,
 } from "@fortawesome/free-solid-svg-icons"
 
 export default function MarhalaDetailPage() {
@@ -38,7 +42,7 @@ export default function MarhalaDetailPage() {
           <Skeleton className="mb-6 h-8 w-48 sm:mb-8" />
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-20 sm:h-24" />
+              <Skeleton key={i} className="h-24 sm:h-28" />
             ))}
           </div>
         </div>
@@ -61,28 +65,38 @@ export default function MarhalaDetailPage() {
           onClick={() => router.back()}
           className="mb-4 flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground sm:mb-6"
         >
-          <FontAwesomeIcon icon={faArrowLeft} className="size-3" /> Back
+          <FontAwesomeIcon icon={faArrowLeft} className="size-3" /> Back to Marhalas
         </button>
 
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">{marhala.title}</h1>
-          <p className="mt-2 text-sm text-muted-foreground sm:text-base">
-            {marhala.description}
-          </p>
-          <div className="mt-3 flex flex-wrap items-center gap-2 sm:mt-4 sm:gap-4">
-            <Badge variant="secondary">
-              Pass: {marhala.passing_threshold}%
-            </Badge>
-            <span className="text-xs text-muted-foreground sm:text-sm">
-              {courses.length} courses
-            </span>
+        {/* Marhala Header */}
+        <div className="mb-6 rounded-xl border border-border bg-card p-5 shadow-sm sm:mb-8 sm:p-6">
+          <div className="flex items-start gap-4">
+            <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-primary text-2xl font-bold text-primary-foreground sm:size-16">
+              {marhala.order}
+            </div>
+            <div className="flex-1">
+              <h1 className="text-xl font-bold text-foreground sm:text-2xl">
+                {marhala.title}
+              </h1>
+              <p className="mt-1 text-sm text-muted-foreground">{marhala.description}</p>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <Badge variant="secondary">
+                  Pass: {marhala.passing_threshold}%
+                </Badge>
+                <Badge variant="outline">
+                  <FontAwesomeIcon icon={faClipboardList} className="mr-1 size-3" />
+                  {courses.length} courses
+                </Badge>
+              </div>
+            </div>
           </div>
         </div>
 
+        {/* Enroll Button */}
         {!enrolled && (
-          <div className="mb-6 rounded-xl border border-border bg-card p-5 text-center shadow-sm sm:mb-8 sm:p-8">
+          <div className="mb-6 rounded-xl border border-border bg-card p-5 text-center shadow-sm sm:mb-8">
             <p className="mb-4 text-sm text-muted-foreground">
-              Enroll in this marhala to start learning
+              Enroll in this marhala to access all courses and lessons
             </p>
             <Button onClick={handleEnroll} disabled={enrollMutation.isPending}>
               {enrollMutation.isPending ? "Enrolling..." : "Enroll Now"}
@@ -90,21 +104,26 @@ export default function MarhalaDetailPage() {
           </div>
         )}
 
+        {/* Courses List */}
         <div className="space-y-3 sm:space-y-4">
-          <h2 className="text-lg font-semibold text-foreground sm:text-xl">Courses</h2>
+          <h2 className="text-lg font-semibold text-foreground sm:text-xl">
+            Courses & Lessons
+          </h2>
           {courses.length === 0 ? (
             <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground shadow-sm">
               No courses available yet
             </div>
           ) : (
             courses.map((course: any) => (
-              <div
+              <Link
                 key={course.id}
-                className={`rounded-xl border border-border bg-card p-4 shadow-sm transition-shadow sm:p-5 ${
-                  course.is_unlocked ? "hover:shadow-md" : "opacity-60"
+                href={`/courses/${course.id}`}
+                className={`group block overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:shadow-md hover:ring-2 hover:ring-primary/20 ${
+                  !course.is_unlocked ? "pointer-events-none opacity-60" : ""
                 }`}
               >
-                <div className="flex items-center justify-between">
+                {/* Course Header */}
+                <div className="flex items-center justify-between border-b border-border bg-primary/5 px-4 py-3 sm:px-5">
                   <div className="flex items-center gap-3">
                     {course.is_unlocked ? (
                       <FontAwesomeIcon icon={faCheckCircle} className="size-5 text-green-500" />
@@ -121,14 +140,47 @@ export default function MarhalaDetailPage() {
                     </div>
                   </div>
                   {course.is_unlocked && (
-                    <Link href={`/courses/${course.id}`}>
-                      <Button variant="ghost" size="sm">
-                        <FontAwesomeIcon icon={faArrowRight} className="size-4" />
-                      </Button>
-                    </Link>
+                    <FontAwesomeIcon
+                      icon={faArrowRight}
+                      className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-primary"
+                    />
                   )}
                 </div>
-              </div>
+
+                {/* Lessons Preview */}
+                {course.is_unlocked && course.lessons && course.lessons.length > 0 && (
+                  <div className="px-4 py-3 sm:px-5">
+                    <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                      <FontAwesomeIcon icon={faBookOpen} className="size-3" />
+                      Lessons in this course:
+                    </div>
+                    <div className="mt-2 space-y-1.5">
+                      {course.lessons.slice(0, 5).map((lesson: any) => (
+                        <div
+                          key={lesson.id}
+                          className="flex items-center justify-between rounded-lg bg-muted/50 px-3 py-2 text-xs"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="flex size-5 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
+                              {lesson.order}
+                            </div>
+                            <span className="text-foreground">{lesson.title}</span>
+                          </div>
+                          <div className="flex items-center gap-1 text-muted-foreground">
+                            <FontAwesomeIcon icon={faClock} className="size-2.5" />
+                            {lesson.duration_minutes}m
+                          </div>
+                        </div>
+                      ))}
+                      {course.lessons.length > 5 && (
+                        <p className="text-xs text-muted-foreground">
+                          + {course.lessons.length - 5} more lessons...
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </Link>
             ))
           )}
         </div>

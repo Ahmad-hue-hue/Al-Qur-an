@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useAuth } from "@/hooks/useAuth"
 import { useMyMarhalas } from "@/lib/hooks"
 import { Badge } from "@/components/ui/badge"
@@ -13,6 +14,8 @@ import {
   faBookOpen,
   faAward,
   faArrowRight,
+  faClipboardList,
+  faUserPlus,
 } from "@fortawesome/free-solid-svg-icons"
 
 export default function DashboardPage() {
@@ -25,20 +28,25 @@ export default function DashboardPage() {
   return (
     <div className="px-4 py-6 sm:py-8">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
-            Welcome back, {user?.name}
-          </h1>
-          {user?.registration_number && (
-            <div className="mt-2">
-              <Badge variant="secondary" className="text-xs sm:text-sm">
-                Registration: {user.registration_number}
+        {/* Welcome Header */}
+        <div className="mb-6 flex items-center gap-4 sm:mb-8">
+          <Image
+            src="/logo.jpeg"
+            alt="Logo"
+            width={48}
+            height={48}
+            className="rounded-full"
+          />
+          <div>
+            <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
+              Welcome, {user?.name}
+            </h1>
+            {user?.registration_number && (
+              <Badge variant="secondary" className="mt-1 text-xs">
+                Reg: {user.registration_number}
               </Badge>
-            </div>
-          )}
-          <p className="mt-2 text-sm text-muted-foreground sm:text-base">
-            Continue your learning journey
-          </p>
+            )}
+          </div>
         </div>
 
         {/* Stats Grid */}
@@ -58,15 +66,22 @@ export default function DashboardPage() {
           ))}
         </div>
 
-        {/* Enrolled Marhalas */}
+        {/* Enrolled Marhalas as Cards */}
         <div className="mb-6 sm:mb-8">
-          <h2 className="mb-3 text-lg font-semibold text-foreground sm:mb-4 sm:text-xl">
-            My Marhalas
-          </h2>
+          <div className="mb-3 flex items-center justify-between sm:mb-4">
+            <h2 className="text-lg font-semibold text-foreground sm:text-xl">
+              My Marhalas
+            </h2>
+            <Link href="/marhalas">
+              <Button variant="ghost" size="sm">
+                View All <FontAwesomeIcon icon={faArrowRight} className="ml-1 size-3" />
+              </Button>
+            </Link>
+          </div>
           {isLoading ? (
             <div className="space-y-3">
               {[1, 2, 3].map((i) => (
-                <Skeleton key={i} className="h-24 sm:h-28" />
+                <Skeleton key={i} className="h-28 sm:h-32" />
               ))}
             </div>
           ) : enrollments.length === 0 ? (
@@ -79,24 +94,33 @@ export default function DashboardPage() {
                 You haven&apos;t enrolled in any marhalas yet
               </p>
               <Link href="/marhalas">
-                <Button size="sm">Browse Marhalas</Button>
+                <Button>
+                  <FontAwesomeIcon icon={faClipboardList} className="mr-2 size-4" />
+                  Browse Marhalas
+                </Button>
               </Link>
             </div>
           ) : (
             <div className="space-y-3">
               {enrollments.map((enrollment: any) => (
-                <div
+                <Link
                   key={enrollment.id}
-                  className="rounded-xl border border-border bg-card p-4 shadow-sm"
+                  href={`/marhalas/${enrollment.marhala.id}`}
+                  className="group block overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:shadow-md hover:ring-2 hover:ring-primary/20"
                 >
-                  <div className="mb-3 flex items-center justify-between">
-                    <div>
-                      <h3 className="font-semibold text-foreground">
-                        {enrollment.marhala.title}
-                      </h3>
-                      <p className="text-xs text-muted-foreground">
-                        Marhala {enrollment.marhala.order}
-                      </p>
+                  <div className="flex items-center justify-between border-b border-border bg-primary/5 px-4 py-3 sm:px-5">
+                    <div className="flex items-center gap-3">
+                      <div className="flex size-10 items-center justify-center rounded-xl bg-primary text-lg font-bold text-primary-foreground">
+                        {enrollment.marhala.order}
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-semibold text-foreground sm:text-base">
+                          {enrollment.marhala.title}
+                        </h3>
+                        <p className="text-xs text-muted-foreground">
+                          Marhala {enrollment.marhala.order}
+                        </p>
+                      </div>
                     </div>
                     <Badge
                       variant={
@@ -110,19 +134,46 @@ export default function DashboardPage() {
                       {enrollment.status}
                     </Badge>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Progress value={enrollment.status === "completed" ? 100 : 50} className="flex-1" />
-                    <Link href={`/marhalas/${enrollment.marhala.id}`}>
-                      <Button variant="ghost" size="sm">
-                        <FontAwesomeIcon icon={faArrowRight} className="size-4" />
-                      </Button>
-                    </Link>
+                  <div className="px-4 py-3 sm:px-5">
+                    <div className="mb-2 flex items-center justify-between text-xs sm:text-sm">
+                      <span className="text-muted-foreground">Progress</span>
+                      <span className="font-medium">
+                        {enrollment.status === "completed" ? "100" : "50"}%
+                      </span>
+                    </div>
+                    <Progress
+                      value={enrollment.status === "completed" ? 100 : 50}
+                      className="w-full"
+                    />
+                    <div className="mt-2 flex items-center justify-end text-xs font-medium text-primary group-hover:underline">
+                      View Courses
+                      <FontAwesomeIcon icon={faArrowRight} className="ml-1 size-3" />
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
         </div>
+
+        {/* CTA for non-enrolled */}
+        {enrollments.length === 0 && (
+          <div className="rounded-xl border border-primary/20 bg-primary/5 p-5 text-center sm:p-8">
+            <FontAwesomeIcon icon={faUserPlus} className="mb-3 size-8 text-primary sm:mb-4" />
+            <h3 className="mb-2 text-lg font-semibold text-foreground">
+              Start Your Tajweed Journey
+            </h3>
+            <p className="mb-4 text-sm text-muted-foreground">
+              Browse our marhalas and enroll to begin learning
+            </p>
+            <Link href="/marhalas">
+              <Button>
+                <FontAwesomeIcon icon={faClipboardList} className="mr-2 size-4" />
+                Explore Marhalas
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -10,9 +10,9 @@ export function middleware(request: NextRequest) {
 
   const isProtected = protectedRoutes.some((route) => pathname.startsWith(route))
   if (isProtected && !token) {
-    const loginUrl = new URL("/login", request.url)
-    loginUrl.searchParams.set("redirect", pathname)
-    return NextResponse.redirect(loginUrl)
+    const registerUrl = new URL("/register", request.url)
+    registerUrl.searchParams.set("redirect", pathname)
+    return NextResponse.redirect(registerUrl)
   }
 
   if (authRoutes.some((route) => pathname.startsWith(route)) && token) {
