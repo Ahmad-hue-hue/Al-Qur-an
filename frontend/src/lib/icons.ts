@@ -72,7 +72,6 @@ import {
   faFilter,
   faCalendar,
   faCalendarAlt,
-  faClock,
   faHourglass,
   faHourglassHalf,
   faHourglassEmpty,
